@@ -1,0 +1,97 @@
+library	nid	address	kind	database name
+0x0	935CD196	81000038	func	
+0x0	936C8A78	81002118	var	
+0x0	6C2224BA	81001b00	var	
+SceSblACMgrForKernel	02422F1F	81001220	func	
+SceSblACMgrForKernel	04C0ED3F	8100122c	func	
+SceSblACMgrForKernel	05FDC646	81000738	func	ksceSblACMgrIsGameProgram2
+SceSblACMgrForKernel	06BE9F0F	81000cf0	func	
+SceSblACMgrForKernel	0E489631	81000b98	func	
+SceSblACMgrForKernel	11C9158B	810003f8	func	
+SceSblACMgrForKernel	165C3C7A	810005f4	func	
+SceSblACMgrForKernel	1948E9DB	81000050	func	
+SceSblACMgrForKernel	1B160234	81000314	func	
+SceSblACMgrForKernel	2AE6CF27	8100021c	func	kscePfsACSetFSAttrByMode
+SceSblACMgrForKernel	30575458	81000804	func	
+SceSblACMgrForKernel	31C23B66	810006f4	func	ksceSblACMgrIsRootProgram2
+SceSblACMgrForKernel	3388F595	81000d48	func	ksceSblACMgrIsSIEApp2
+SceSblACMgrForKernel	356B9139	81000470	func	
+SceSblACMgrForKernel	384D20FD	81000e28	func	ksceSblACMgrIsAllowedExtendedMemory2
+SceSblACMgrForKernel	3F99279F	8100072c	func	ksceSblACMgrIsNonGameProgram2
+SceSblACMgrForKernel	410357AF	81001238	func	
+SceSblACMgrForKernel	47B67F72	81001198	func	ksceSblACMgrIsPspEmu2
+SceSblACMgrForKernel	48F4D5EE	81000ad8	func	
+SceSblACMgrForKernel	49509A83	81000ae4	func	
+SceSblACMgrForKernel	4C4B7D6B	81001100	func	
+SceSblACMgrForKernel	570D6AD3	8100070c	func	ksceSblACMgrIsNonGameOrGameProgram2
+SceSblACMgrForKernel	5AC59172	810007a4	func	ksceSblACMgrIsFself2
+SceSblACMgrForKernel	5E6BA11C	81001260	func	
+SceSblACMgrForKernel	7529E364	810010a8	func	
+SceSblACMgrForKernel	75AAF981	81000380	func	
+SceSblACMgrForKernel	7C2AF978	810005b4	func	ksceSblACMgrGetProcessProgramAuthId2
+SceSblACMgrForKernel	7F294A09	8100012c	func	
+SceSblACMgrForKernel	8241AB5C	81000544	func	
+SceSblACMgrForKernel	930CD037	81000700	func	ksceSblACIsSystemProgram
+SceSblACMgrForKernel	96403142	810011f8	func	ksceSblACMgrIsAllowedVirtualMachine2
+SceSblACMgrForKernel	966B3738	81000c78	func	ksceSblACMgrIsPSMRuntime2
+SceSblACMgrForKernel	98B28671	81000a10	func	ksceSblACMgrIsUpdaterUISetupperOrPkgInstallerSpawn2
+SceSblACMgrForKernel	9EDAF856	81000500	func	ksceSblACMgrHasCapability2
+SceSblACMgrForKernel	A50FDA27	81000bd4	func	
+SceSblACMgrForKernel	A7C3001D	81000878	func	ksceSblACMgrIsWebCoreOrWebKitProcess2
+SceSblACMgrForKernel	AF6F208E	81000da8	func	ksceSblACMgrIsMiniSettingsForQA2
+SceSblACMgrForKernel	BBA13D9C	81000b8c	func	ksceSblACMgrIsDevelopmentMode2
+SceSblACMgrForKernel	C90A9216	81000be0	func	ksceSblACMgrIsPSMDevAssistant2
+SceSblACMgrForKernel	CCDBB74D	81000294	func	
+SceSblACMgrForKernel	D442962E	81000054	func	ksceSblACMgrGetMediaType2
+SceSblACMgrForKernel	DC49E160	81000ba4	func	
+SceSblACMgrForKernel	E273ED8C	810009b0	func	
+SceSblACMgrForKernel	F5AD56E4	81001000	func	ksceSblACMgrIsNotSandboxed2
+SceSblACMgrForKernel	F9FEF5F0	8100082c	func	ksceSblACMgrIsSceShell2
+SceSblACMgrForKernel	FB2AC5B4	81000eb8	func	
+SceSblACMgrForKernel	FBA1A256	8100004c	func	
+SceSblACMgrForDriver	0139FC20	81000878	func	ksceSblACMgrIsWebCoreOrWebKitProcess
+SceSblACMgrForDriver	0606B87E	81000438	func	
+SceSblACMgrForDriver	062CAEB2	81000ba4	func	ksceSblACMgrIsAllowedUsbSerial
+SceSblACMgrForDriver	091F7247	81000c78	func	ksceSblACMgrIsPSMRuntime
+SceSblACMgrForDriver	0924896F	810009b0	func	
+SceSblACMgrForDriver	0948F41C	810006f4	func	ksceSblACMgrIsRootProgram
+SceSblACMgrForDriver	0B6E6CD7	81001000	func	ksceSblACMgrIsNotSandboxed
+SceSblACMgrForDriver	1298C647	81000738	func	ksceSblACMgrIsGameProgram
+SceSblACMgrForDriver	2A29453C	810011f8	func	ksceSblACMgrIsAllowedVirtualMachine
+SceSblACMgrForDriver	2E992B02	81000a6c	func	
+SceSblACMgrForDriver	3B356B98	810003f8	func	
+SceSblACMgrForDriver	426A4E8C	810007a4	func	ksceSblACMgrIsFself
+SceSblACMgrForDriver	4322F188	81000054	func	ksceSblACMgrGetMediaType
+SceSblACMgrForDriver	456DA7AC	81001100	func	
+SceSblACMgrForDriver	48CFCEA2	81000314	func	
+SceSblACMgrForDriver	4CBD6156	81000ae4	func	
+SceSblACMgrForDriver	4DB7F512	81000e28	func	ksceSblACMgrIsAllowedExtendedMemory
+SceSblACMgrForDriver	5C4BC352	81000cf0	func	
+SceSblACMgrForDriver	5F9AF49C	8100012c	func	
+SceSblACMgrForDriver	6210D745	8100021c	func	
+SceSblACMgrForDriver	6C5AB07F	8100072c	func	ksceSblACMgrIsNonGameProgram
+SceSblACMgrForDriver	6D8A88B7	810010a8	func	
+SceSblACMgrForDriver	84604EED	81000ad8	func	
+SceSblACMgrForDriver	8612B243	81000700	func	ksceSblACMgrIsSystemProgram
+SceSblACMgrForDriver	8A54DF3A	8100070c	func	ksceSblACMgrIsNonGameOrGameProgram
+SceSblACMgrForDriver	962CD237	81000a10	func	ksceSblACMgrIsUpdaterUISetupperOrPkgInstallerSpawn
+SceSblACMgrForDriver	96AF69BD	810005b4	func	ksceSblACMgrGetProcessProgramAuthId
+SceSblACMgrForDriver	991FDC15	8100082c	func	ksceSblACMgrIsSceShell
+SceSblACMgrForDriver	A27E47A7	81001220	func	
+SceSblACMgrForDriver	A67E8E5B	81000d48	func	ksceSblACMgrIsSIEApp
+SceSblACMgrForDriver	A92CD636	81001260	func	
+SceSblACMgrForDriver	AD717E7A	81000b98	func	
+SceSblACMgrForDriver	AE1AF154	81001238	func	
+SceSblACMgrForDriver	B12CEAA8	81000294	func	
+SceSblACMgrForDriver	B836CF13	81000bd4	func	
+SceSblACMgrForDriver	BE5667C5	81000380	func	
+SceSblACMgrForDriver	C2D1F2FC	81000500	func	ksceSblACMgrHasCapability
+SceSblACMgrForDriver	C98D82EE	81000be0	func	ksceSblACMgrIsPSMDevAssistant
+SceSblACMgrForDriver	D0E11C89	81000da8	func	ksceSblACMgrIsMiniSettingsForQA
+SceSblACMgrForDriver	D7AD8471	81000eb8	func	
+SceSblACMgrForDriver	E79C7A8D	810005f4	func	
+SceSblACMgrForDriver	E87D1777	81000b8c	func	ksceSblACMgrIsDevelopmentMode
+SceSblACMgrForDriver	F5AE24AC	8100122c	func	
+SceSblACMgrForDriver	FD00C72A	81001198	func	ksceSblACMgrIsPspEmu
+SceSblACMgrForDriver	FF7125DE	81000470	func	
+SceSblACMgr	3C17A7F7	81001a80	func	_sceSblACMgrIsGameProgram

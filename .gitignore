@@ -1,0 +1,5 @@
+build/
+tests/host/build/
+*.skprx
+*.velf
+*.img

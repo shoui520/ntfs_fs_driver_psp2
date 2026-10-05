@@ -1,0 +1,210 @@
+0x0	935CD196	81001150	func	
+0x0	936C8A78	8101c970	var	
+0x0	6C2224BA	8101b930	var	
+SceIofilemgrForDriver	00C9C2DD	8100eb88	func	ksceVopDopen
+SceIofilemgrForDriver	03051B02	81001740	func	ksceIoDreadForVshbridge
+SceIofilemgrForDriver	03F6A684	81001a58	func	
+SceIofilemgrForDriver	041209CF	81014fb8	func	ksceIoSyncByFdAsync
+SceIofilemgrForDriver	082AFD7F	8100f3a8	func	ksceVopFchstat
+SceIofilemgrForDriver	0B54F9E0	81005d04	func	vfsPread
+SceIofilemgrForDriver	0D493274	81001000	func	ksceIoGetPUIDFdListForDebugger
+SceIofilemgrForDriver	0D7BB3E1	81000a58	func	ksceIoRemove
+SceIofilemgrForDriver	0D8A806E	8100f1d8	func	ksceVopUnlink
+SceIofilemgrForDriver	0E518FA9	810086dc	func	vfsOpen
+SceIofilemgrForDriver	0F7E1718	8100f738	func	ksceVopCleanup
+SceIofilemgrForDriver	0FEE1238	81014f2c	func	ksceIoGetstatByFdAsync
+SceIofilemgrForDriver	11C57CC6	81014060	func	ksceIoCloseAsync
+SceIofilemgrForDriver	12F8D58E	81013048	func	
+SceIofilemgrForDriver	1350F5C7	8100ed34	func	ksceVopDclose
+SceIofilemgrForDriver	15C17487	81013034	func	
+SceIofilemgrForDriver	161CD33F	8100078c	func	ksceIoIoctl
+SceIofilemgrForDriver	16336A0D	810015dc	func	ksceIoFlock
+SceIofilemgrForDriver	16882FC4	81000d74	func	ksceIoDevctl
+SceIofilemgrForDriver	1974FA92	8100edf0	func	ksceVopChstat
+SceIofilemgrForDriver	19C81DD6	810009d0	func	ksceIoDclose
+SceIofilemgrForDriver	1AE14011	81005fe4	func	vfsClose
+SceIofilemgrForDriver	1CC9C634	81000b58	func	ksceIoRmdir
+SceIofilemgrForDriver	1D551105	8100e73c	func	ksceVopRmdir
+SceIofilemgrForDriver	1DBCBB01	8100f2cc	func	ksceVopFgetstat
+SceIofilemgrForDriver	1F98BD50	810016ac	func	ksceIoChstatForVshbridge
+SceIofilemgrForDriver	202CDDE3	81014d34	func	ksceIoPwriteAsync
+SceIofilemgrForDriver	20574100	81018e3c	func	ksceIoUmount
+SceIofilemgrForDriver	20CF5FC7	81000944	func	ksceIoDread
+SceIofilemgrForDriver	21D57633	8100a5b8	func	vfsFreeVnode
+SceIofilemgrForDriver	21EE91F0	810005c4	func	ksceIoWrite
+SceIofilemgrForDriver	27003443	81014708	func	ksceIoMkdirAsync
+SceIofilemgrForDriver	2A17515D	810012ec	func	ksceIoPread
+SceIofilemgrForDriver	2DFA192F	81018ea8	func	ksceIoCreateMountEvent
+SceIofilemgrForDriver	2EFDFA12	81008438	func	
+SceIofilemgrForDriver	2F3F8C70	8100e65c	func	ksceVopMkdir
+SceIofilemgrForDriver	333C904D	8100f0ec	func	ksceVopIoctl
+SceIofilemgrForDriver	338DCD68	810096a0	func	ksceIoSyncByFd
+SceIofilemgrForDriver	3675ECB9	81013020	func	
+SceIofilemgrForDriver	36A794C7	8100ea70	func	ksceVopRename
+SceIofilemgrForDriver	39ABDB9E	81019138	func	
+SceIofilemgrForDriver	3A79FAC9	81007748	func	
+SceIofilemgrForDriver	3C0343DB	81015218	func	ksceIoCreateErrorEvent
+SceIofilemgrForDriver	3F0FF9D5	8101167c	func	ksceIoSetThreadDefaultPriorityForSystem
+SceIofilemgrForDriver	40944C2E	8100d94c	func	ksceVopClose
+SceIofilemgrForDriver	40B933C7	8101532c	func	ksceIoClearErrorEvent
+SceIofilemgrForDriver	43170575	81001554	func	ksceIoSyncByFd2
+SceIofilemgrForDriver	43DB0AE4	81018fdc	func	ksceIoDeleteMountEvent
+SceIofilemgrForDriver	44EDCE57	81001aa8	func	ksceIoGetRemoteKPLSData
+SceIofilemgrForDriver	451001DE	81013f94	func	ksceIoOpenAsync
+SceIofilemgrForDriver	462F059B	8100143c	func	ksceIoGetstatByFd
+SceIofilemgrForDriver	463B25CC	810008c8	func	ksceIoDopen
+SceIofilemgrForDriver	4F9EA8B0	81014b10	func	ksceIoSyncAsync
+SceIofilemgrForDriver	50A63ACF	8100e888	func	ksceVopGetstat
+SceIofilemgrForDriver	541BAABD	810143cc	func	ksceIoLseekAsync
+SceIofilemgrForDriver	570388A5	8100db20	func	ksceVopRead
+SceIofilemgrForDriver	5982B0E3	8101467c	func	ksceIoDreadAsync
+SceIofilemgrForDriver	5B7E5AB8	8100956c	func	
+SceIofilemgrForDriver	5F1512C8	81001394	func	ksceIoPwrite
+SceIofilemgrForDriver	6048F245	8100a390	func	vfsUnlockVnode
+SceIofilemgrForDriver	62090481	81000654	func	ksceIoLseek
+SceIofilemgrForDriver	64A46A2C	81014bd4	func	ksceIoPreadAsync
+SceIofilemgrForDriver	673D2FCD	8100a698	func	ksceVfsAddVfs
+SceIofilemgrForDriver	69047C81	810140f8	func	ksceIoReadAsync
+SceIofilemgrForDriver	69A7E076	81007abc	func	vfsRmdev
+SceIofilemgrForDriver	6B3CA9F7	81009f80	func	vfsLockMnt
+SceIofilemgrForDriver	6BEEDDB4	8100963c	func	
+SceIofilemgrForDriver	6D0FEDB6	8101176c	func	ksceIoGetThreadDefaultPriorityForSystem
+SceIofilemgrForDriver	6D59658D	81015044	func	ksceIoCancel
+SceIofilemgrForDriver	72F06BDE	81014524	func	ksceIoDopenAsync
+SceIofilemgrForDriver	7517FE29	81007928	func	vfsChstatByFd
+SceIofilemgrForDriver	75192972	810004a4	func	ksceIoOpen
+SceIofilemgrForDriver	75C96D25	81000bd4	func	ksceIoGetstat
+SceIofilemgrForDriver	76B79BEC	8100d6f8	func	ksceVopOpen
+SceIofilemgrForDriver	77584C8F	8100ec44	func	ksceVopDread
+SceIofilemgrForDriver	7D42B8DC	81000c5c	func	ksceIoChstat
+SceIofilemgrForDriver	7EC442BF	8101497c	func	ksceIoChstatAsync
+SceIofilemgrForDriver	7F710B25	81000ad4	func	ksceIoMkdir
+SceIofilemgrForDriver	809892C1	81005ac4	func	vfsRead
+SceIofilemgrForDriver	8598ADC3	81005bc0	func	vfsWrite
+SceIofilemgrForDriver	8F0DE34D	810150b8	func	
+SceIofilemgrForDriver	8FB94521	8100e81c	func	ksceVopInactive
+SceIofilemgrForDriver	942AA61F	8100f1a0	func	ksceVopLink
+SceIofilemgrForDriver	94A5304A	81014a4c	func	ksceIoGetstatAsync
+SceIofilemgrForDriver	9A68378D	8100dd94	func	ksceVopWrite
+SceIofilemgrForDriver	9C220246	81002908	func	ksceIoGetMediaType
+SceIofilemgrForDriver	9C7E7B76	81006a38	func	vfsUmount
+SceIofilemgrForDriver	9CBFA725	8100a700	func	ksceVfsDeleteVfs
+SceIofilemgrForDriver	9CD96406	8100f210	func	ksceVopSync
+SceIofilemgrForDriver	9E347C7D	8100d86c	func	ksceVopCreate
+SceIofilemgrForDriver	9FCDCE62	810118f8	func	
+SceIofilemgrForDriver	A1BD13D0	81014274	func	ksceIoWriteAsync
+SceIofilemgrForDriver	A1EF2648	8100112c	func	ksceIoGetFileInfo
+SceIofilemgrForDriver	A39A9CA7	81019064	func	
+SceIofilemgrForDriver	A53C040D	8100e228	func	ksceVopPwrite
+SceIofilemgrForDriver	A5A6A55C	8100d64c	func	ksceVopLookup
+SceIofilemgrForDriver	A7020B0D	81010ff8	func	vfsBuffCacheCtl
+SceIofilemgrForDriver	A9302946	810151d8	func	ksceIoDevctlAsync
+SceIofilemgrForDriver	AA253B68	810077a8	func	vfsGetVnodeName
+SceIofilemgrForDriver	AA45010B	8100a294	func	vfsLockVnode
+SceIofilemgrForDriver	AACBC47A	8101488c	func	ksceIoRenameAsync
+SceIofilemgrForDriver	ABBC80E3	8100e050	func	ksceVopPread
+SceIofilemgrForDriver	ABE65071	81011510	func	ksceIoSetProcessDefaultPriorityForSystem
+SceIofilemgrForDriver	AC0E9AAA	81001a18	func	
+SceIofilemgrForDriver	B07B307D	8100f9fc	func	ksceVfsOpDevctl
+SceIofilemgrForDriver	B2B13818	8100e4e0	func	ksceVopLseek
+SceIofilemgrForDriver	B499287E	81015128	func	
+SceIofilemgrForDriver	B62DE9A6	81004a0c	func	vfsMount
+SceIofilemgrForDriver	B761E91B	810151d0	func	ksceIoIoctlAsync
+SceIofilemgrForDriver	B987450D	81001aa0	func	vfsGetMntInfo
+SceIofilemgrForDriver	BBAC1751	81007628	func	vfsAllocateFile
+SceIofilemgrForDriver	BCE4865B	810064f4	func	vfsChstat
+SceIofilemgrForDriver	C08F199F	810145e4	func	ksceIoDcloseAsync
+SceIofilemgrForDriver	C1DD4317	81007f60	func	vfsIoctl
+SceIofilemgrForDriver	C20C621C	81001a98	func	vfsGetMntList
+SceIofilemgrForDriver	C3AE93A2	8100a438	func	vfsIsOwnerVnode
+SceIofilemgrForDriver	C3D34965	81002868	func	ksceIoOpenForPid
+SceIofilemgrForDriver	C468B5EF	8100a090	func	vfsIsLockedMnt
+SceIofilemgrForDriver	C6158F8D	81015370	func	ksceIoDeleteErrorEvent
+SceIofilemgrForDriver	C722DF35	8101300c	func	
+SceIofilemgrForDriver	C85E33A2	81007644	func	vfsFreeFile
+SceIofilemgrForDriver	CCE94599	8101186c	func	
+SceIofilemgrForDriver	CDF3EF52	8100768c	func	vfsAllocateFileDummy
+SceIofilemgrForDriver	CE397158	810115d0	func	ksceIoGetProcessDefaultPriorityForSystem
+SceIofilemgrForDriver	CFAECF18	810019c0	func	ksceIoSetPathMappingFunction
+SceIofilemgrForDriver	D070BC48	81018dbc	func	ksceIoMount
+SceIofilemgrForDriver	D220539D	81019248	func	vfsUmountForPFS
+SceIofilemgrForDriver	D60B5C63	8100b850	func	vfsGetNewVnode
+SceIofilemgrForDriver	D6503624	81001624	func	ksceIoGetstatForVshbridge
+SceIofilemgrForDriver	D6AB5E4B	81011250	func	vfsBuffCacheFree
+SceIofilemgrForDriver	DC0C4997	81000cf0	func	ksceIoRename
+SceIofilemgrForDriver	DC1E7EE4	8100e980	func	ksceVopRemove
+SceIofilemgrForDriver	DC2D8BCE	81009fb4	func	vfsUnlockMnt
+SceIofilemgrForDriver	DCF75F6D	81000f24	func	ksceIoGetGUIDFdListForDebugger
+SceIofilemgrForDriver	DD46CD63	810153ac	func	
+SceIofilemgrForDriver	DDF78594	81000ea0	func	ksceIoSync
+SceIofilemgrForDriver	DF57A75F	810014c4	func	ksceIoChstatByFd
+SceIofilemgrForDriver	E17EFC03	8100052c	func	ksceIoRead
+SceIofilemgrForDriver	E5DEA6B7	81005e14	func	vfsPwrite
+SceIofilemgrForDriver	EC974400	81014e9c	func	ksceIoChstatByFdAsync
+SceIofilemgrForDriver	EEAE8B51	8100f858	func	ksceVopZerofill
+SceIofilemgrForDriver	F4F8C59A	81000404	func	
+SceIofilemgrForDriver	F53399BC	8100f6a8	func	ksceVopWhiteout
+SceIofilemgrForDriver	F5B0B36C	810147cc	func	ksceIoRmdirAsync
+SceIofilemgrForDriver	F7DAC0F5	8100fb9c	func	ksceVfsOpDecodePathElem
+SceIofilemgrForDriver	F99DD8A3	81000410	func	ksceIoClose
+SceIofilemgrForDriver	F9D6507D	81014464	func	ksceIoRemoveAsync
+SceIofilemgrForDriver	FEEE44A9	810191cc	func	vfsMountForPFS
+SceIofilemgr	09CD0FC8	810021c4	func	_sceIoOpenAsync
+SceIofilemgr	0DC4F1BB	81017c80	func	sceIoGetProcessDefaultPriority
+SceIofilemgr	13DC3244	810023bc	func	_sceIoRmdirAsync
+SceIofilemgr	14B2D56C	81017cd8	func	sceIoSetPriority
+SceIofilemgr	16512F59	81016c20	func	sceIoSyncByFd
+SceIofilemgr	1D2988F1	810020d0	func	_sceIoIoctl
+SceIofilemgr	2300858E	81002240	func	_sceIoLseekAsync
+SceIofilemgr	27373135	81017d98	func	sceIoSetPriorityForSystem
+SceIofilemgr	34EFD876	81015fb4	func	sceIoWrite
+SceIofilemgr	3E98E422	81017e1c	func	sceIoFlockForSystem
+SceIofilemgr	3EE3F66E	810025c8	func	_sceIoDevctlAsync
+SceIofilemgr	422A221A	81016418	func	sceIoDclose
+SceIofilemgr	4912F748	81001c50	func	_sceIoRename
+SceIofilemgr	49252B9B	810160f8	func	sceIoLseek32
+SceIofilemgr	49312108	81017c9c	func	sceIoSetThreadDefaultPriority
+SceIofilemgr	515AC017	81002040	func	_sceIoDevctl
+SceIofilemgr	5167AC1E	81017bb8	func	sceIoGetstatByFdAsync
+SceIofilemgr	539FD5C4	810026dc	func	_sceIoPread
+SceIofilemgr	5DD867F7	81001fcc	func	_sceIoSync
+SceIofilemgr	5FFA47E2	810022d0	func	_sceIoRemoveAsync
+SceIofilemgr	773EBD45	81016dc4	func	sceIoReadAsync
+SceIofilemgr	78955C65	81001be8	func	_sceIoRemove
+SceIofilemgr	7E1367CB	81017c0c	func	sceIoSyncByFdAsync
+SceIofilemgr	7F2ABBAF	81017c60	func	sceIoSetProcessDefaultPriority
+SceIofilemgr	81794921	81002430	func	_sceIoRenameAsync
+SceIofilemgr	86DB0C0E	81002664	func	_sceIoSyncAsync
+SceIofilemgr	8713D662	81001e2c	func	_sceIoDread
+SceIofilemgr	8E7E11F2	81001e9c	func	_sceIoGetstat
+SceIofilemgr	8EA3616A	81016d94	func	sceIoCloseAsync
+SceIofilemgr	8F1ACC32	81001ce8	func	_sceIoMkdir
+SceIofilemgr	9111D004	81002814	func	_sceIoCompleteMultiple
+SceIofilemgr	9654094B	81002728	func	_sceIoPwrite
+SceIofilemgr	A176CD03	81017cbc	func	sceIoGetThreadDefaultPriority
+SceIofilemgr	A604764A	81001ba0	func	_sceIoLseek
+SceIofilemgr	A9F89275	81017b08	func	sceIoChstatByFdAsync
+SceIofilemgr	B2D0B2F4	810027c4	func	_sceIoPwriteAsync
+SceIofilemgr	B4B021D9	810024d4	func	_sceIoChstatAsync
+SceIofilemgr	B9C9C9CF	81017d5c	func	sceIoSetThreadDefaultPriorityForSystem
+SceIofilemgr	BCF5684D	81002774	func	_sceIoPreadAsync
+SceIofilemgr	C49C312F	81016ff8	func	sceIoDopenAsync
+SceIofilemgr	C70B8886	81015e7c	func	sceIoClose
+SceIofilemgr	CC67B6FD	81001b28	func	_sceIoOpen
+SceIofilemgr	CEF48835	810176ec	func	sceIoCancel
+SceIofilemgr	D1C49D2F	8101771c	func	sceIoComplete
+SceIofilemgr	D2EE455F	81001f3c	func	_sceIoChstat
+SceIofilemgr	D414C89F	81002550	func	_sceIoGetstatAsync
+SceIofilemgr	DC2D7D38	810170e8	func	sceIoDcloseAsync
+SceIofilemgr	E00DC256	81002280	func	_sceIoIoctlAsync
+SceIofilemgr	E0BE2A30	81002178	func	_sceIoChstatByFd
+SceIofilemgr	E0D63D2A	81016e1c	func	sceIoWriteAsync
+SceIofilemgr	E6C53567	8100211c	func	_sceIoGetstatByFd
+SceIofilemgr	E6E614B5	81001dc4	func	_sceIoDopen
+SceIofilemgr	EF5432ED	81017ddc	func	sceIoGetPriorityForSystem
+SceIofilemgr	F2A472A1	81017d1c	func	sceIoGetPriority
+SceIofilemgr	F59F37B0	81017184	func	sceIoDreadAsync
+SceIofilemgr	F5C58B21	81002344	func	_sceIoMkdirAsync
+SceIofilemgr	FCBCEAED	81017d7c	func	sceIoGetThreadDefaultPriorityForSystem
+SceIofilemgr	FDB32293	81015ec8	func	sceIoRead
+SceIofilemgr	FFFB4D76	81001d5c	func	_sceIoRmdir
