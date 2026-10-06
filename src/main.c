@@ -95,29 +95,42 @@ static int is_target(int id)
 	return 0;
 }
 
-int ntfsfs_try_mount(int id, int permission)
+/*
+ * Retries a failed mount of id with the "ntfs" VFS, with the arguments of the
+ * original ksceIoMount call.  path, when given, is the block device to mount
+ * (ksceIoMount takes one for ids >= 0x100, e.g. from _vshIoMount); otherwise
+ * the mount table entry's own blockdev is used.  Returns
+ * NTFSFS_ERR_NOT_NTFS when the device holds no NTFS volume or id has no
+ * mount table entry.
+ */
+int ntfsfs_try_mount(int id, const char *path, int permission, int a4, int a5, int a6)
 {
 	const char **slot, *orig, *whole = NULL;
-	int r;
+	int r, r2;
 
 	slot = find_vfs_name_slot(id, &whole);
 	if (!slot) {
 		NTFSFS_LOG("no mount table entry for 0x%X\n", id);
-		return NTFSFS_ERR(ENOENT);
+		return NTFSFS_ERR_NOT_NTFS;
 	}
 	ksceKernelLockMutex(g_hook_lock, 1, NULL);
 	orig = *slot;
 	*slot = g_ntfs_name;
-	r = TAI_CONTINUE(int, g_mount_ref, id, NULL, permission, 0, 0, 0);
+	r = TAI_CONTINUE(int, g_mount_ref, id, path, permission, a4, a5, a6);
 	/*
 	 * With a valid MBR sdstor exposes only partition 1 ("pp-act-a") and
 	 * the whole device, and iofilemgr falls back to the whole device only
 	 * when partition 1 does not exist (vfsMount 0x81004a0c).  NTFS in a
 	 * later partition is found by mounting the whole device, whose MBR
-	 * ntfsfs_probe() reads.  ksceIoMount takes a blockdev for ids >= 0x100.
+	 * ntfsfs_probe() reads.  A block device the caller named is used as
+	 * it is.
 	 */
-	if (r < 0 && r != (int)0x80010011 && whole)
-		r = TAI_CONTINUE(int, g_mount_ref, id, whole, permission, 0, 0, 0);
+	if (r < 0 && r != (int)0x80010011 && !path && whole) {
+		r2 = TAI_CONTINUE(int, g_mount_ref, id, whole, permission, a4, a5, a6);
+		/* keep the result of the attempt that found NTFS */
+		if (r2 >= 0 || r == NTFSFS_ERR_NOT_NTFS || r2 != NTFSFS_ERR_NOT_NTFS)
+			r = r2;
+	}
 	*slot = orig;
 	ksceKernelUnlockMutex(g_hook_lock, 1);
 	return r;
@@ -128,17 +141,21 @@ static int ksceIoMount_hook(int id, const char *path, int permission, int a4, in
 	int r, r2;
 
 	r = TAI_CONTINUE(int, g_mount_ref, id, path, permission, a4, a5, a6);
-	if (r >= 0 || !is_target(id) || path)
-		return r;
 	/* 0x80010011: already mounted */
-	if (r == (int)0x80010011)
+	if (r >= 0 || r == (int)0x80010011 || !is_target(id))
 		return r;
-	r2 = ntfsfs_try_mount(id, permission);
+	r2 = ntfsfs_try_mount(id, path, permission, a4, a5, a6);
 	if (r2 >= 0) {
-		NTFSFS_LOG("mounted 0x%X as NTFS\n", id);
+		NTFSFS_LOG("mounted 0x%X%s%s as NTFS\n", id, path ? " from " : "", path ? path : "");
 		return r2;
 	}
-	return r;
+	NTFSFS_LOG("mount 0x%X: exfat 0x%08X, ntfs 0x%08X\n", id, r, r2);
+	/*
+	 * exfat fails an NTFS volume with 0x80010005 (its -0x22: no FAT sector
+	 * count), which says nothing about why NTFS failed.  Its error only
+	 * stands when there is no NTFS on the device.
+	 */
+	return r2 == NTFSFS_ERR_NOT_NTFS ? r : r2;
 }
 
 static int locate_iofilemgr(void)
@@ -192,7 +209,7 @@ int module_start(SceSize args, void *argp)
 	}
 	/* Devices that were already present and failed their exfat mount. */
 	for (i = 0; i < sizeof(g_targets) / sizeof(g_targets[0]); i++)
-		if (ntfsfs_try_mount(g_targets[i], 0) >= 0)
+		if (ntfsfs_try_mount(g_targets[i], NULL, 0, 0, 0, 0) >= 0)
 			NTFSFS_LOG("mounted 0x%X as NTFS\n", g_targets[i]);
 	NTFSFS_LOG("ready\n");
 	return SCE_KERNEL_START_SUCCESS;

@@ -117,7 +117,7 @@ int ntfsfs_probe(ntfsfs_blk *b)
 		return 0;
 	}
 	if (s[510] != 0x55 || s[511] != 0xaa)
-		return NTFSFS_ERR(EINVAL);
+		return NTFSFS_ERR_NOT_NTFS;
 
 	/* Whole-disk device: look for an NTFS (type 0x07) MBR partition. */
 	for (i = 0; i < 4; i++) {
@@ -139,7 +139,7 @@ int ntfsfs_probe(ntfsfs_blk *b)
 		if (r < 0)
 			return r;
 	}
-	return NTFSFS_ERR(EINVAL);
+	return NTFSFS_ERR_NOT_NTFS;
 }
 
 /* ---- ntfs_device_operations --------------------------------------------- */

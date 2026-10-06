@@ -54,7 +54,7 @@ int ntfsfs_vfs_register(void);
 int ntfsfs_vfs_unregister(void);
 
 /* Mount helper used by the ksceIoMount hook (main.c) */
-int ntfsfs_try_mount(int id, int permission);
+int ntfsfs_try_mount(int id, const char *path, int permission, int a4, int a5, int a6);
 
 /*
  * File attributes as SceSblACMgr sees them (acl.c): the FAT bits READONLY,
@@ -70,5 +70,14 @@ int ntfsfs_acl_devinfo_ok(const char *assign);
 
 /* errno -> SCE error code (SCE_ERROR_ERRNO_* share newlib's numbering) */
 #define NTFSFS_ERR(e) ((int)(0x80010000u | ((unsigned)(e) & 0xffff)))
+
+/*
+ * ntfsfs_probe() found no NTFS volume on the device.  The ksceIoMount hook
+ * then reports the stock exfat error instead of this one.
+ */
+#ifndef EFTYPE
+#define EFTYPE 79 /* newlib */
+#endif
+#define NTFSFS_ERR_NOT_NTFS NTFSFS_ERR(EFTYPE)
 
 #endif

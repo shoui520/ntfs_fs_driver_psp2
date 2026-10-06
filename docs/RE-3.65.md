@@ -150,9 +150,20 @@ section keeps the points ntfsfs depends on.
   directory (`0x8100a1c8`), and its dread hides `SCEDEL~` names. **verified**
 
 ntfsfs therefore retries a failed mount by pointing the runtime entry's
-`vfs_name` at `"ntfs"` and calling the original `ksceIoMount` again, so this
-path runs unchanged. If that fails too, it retries once more with the entry's
-whole-device blockdev (`misc->blockdev_name_no_part`) as the path.
+`vfs_name` at `"ntfs"` and calling the original `ksceIoMount` again with the
+same arguments, so this path runs unchanged. If the caller named no block
+device and that fails too, it retries once more with the entry's whole-device
+blockdev (`misc->blockdev_name_no_part`) as the path.
+
+- `_vshIoMount` (`SceVshBridge_3C522C35`, `0x81003df4` in
+  `bootimage.skprx:vshbridge`) copies 24 bytes from its user buffer and a path
+  of up to 0x400 bytes, checks `SceSblACMgrForDriver_8612B243`, then calls
+  `ksceIoMount(id, path, permission, buf[0], buf[1], buf[2])` (`0x81001f48`,
+  import `SceIofilemgrForDriver_D070BC48`), so it reaches the hook with the
+  caller's path. **verified**
+- exfatfs fails an NTFS volume with `0x80010005`: its FAT path finds
+  `TotSec16` and `TotSec32` both zero (`uvfat_volume_mount`, -0x22), which
+  `uvfat_errno` maps to EIO. **verified**
 
 sdstor answers the remaining device questions
 ([sdstor-3.65](sdstor-3.65/README.md#partitions-and-names)), **verified**:

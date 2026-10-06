@@ -16,9 +16,12 @@ versions are untested).
   iofilemgr in [docs/iofilemgr-3.65/](iofilemgr-3.65/README.md) and the
   sdstor block devices in [docs/sdstor-3.65/](sdstor-3.65/README.md)).
 - Hooks `ksceIoMount`. When the stock exfat mount of a removable device fails,
-  it points that device's iofilemgr mount-table entry at `"ntfs"` and retries,
-  then restores it, so exFAT media keep working and the normal mount path
-  (mount daemon, notifications) is used.
+  it points that device's iofilemgr mount-table entry at `"ntfs"` and retries
+  with the same arguments, including a block device named by the caller (as
+  `_vshIoMount` passes it), then restores the entry. So exFAT media keep
+  working and the normal mount path (mount daemon, notifications) is used.
+  When the device holds NTFS, a failure reports the NTFS error; exfat's own
+  error for an NTFS volume is always `0x80010005`.
 - Devices: `uma0:` (USB mass storage), `sd0:`, `grw0:` (game card slot /
   SD2Vita). Both a bare NTFS volume and an MBR disk with an NTFS (type 0x07)
   partition are accepted.
