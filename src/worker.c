@@ -21,6 +21,7 @@ static volatile ntfsfs_job_fn g_fn;
 static void *volatile g_arg;
 static volatile int g_ret;
 static volatile int g_quit;
+static volatile SceUID g_caller = -1;
 
 static int worker_main(SceSize args, void *argp)
 {
@@ -84,9 +85,16 @@ int ntfsfs_call(ntfsfs_job_fn fn, void *arg)
 		return r;
 	g_fn = fn;
 	g_arg = arg;
+	g_caller = ksceKernelGetThreadId();
 	ksceKernelSignalSema(g_req, 1);
 	ksceKernelWaitSema(g_done, 1, NULL);
 	r = g_ret;
+	g_caller = -1;
 	ksceKernelUnlockMutex(g_call_lock, 1);
 	return r;
+}
+
+SceUID ntfsfs_caller_thread(void)
+{
+	return g_caller;
 }

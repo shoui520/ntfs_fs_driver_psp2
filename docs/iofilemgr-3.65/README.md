@@ -345,6 +345,15 @@ when nothing is left (see [exfatfs](../exfatfs-3.65/README.md#devctl)).
   `vop_remove` must accept a NULL dvp after a delete-while-open.
 - Unless the mount has NOBUF, data passes through iofilemgr's buffer cache.
   The filesystem sees aligned 512-byte and window-sized reads and writes.
+- `vfsMount` holds the block device vnode's lock (taken by
+  `iof_path_dir_vnode`) through the VFS mount op, set_root, devctl 0x3802 and,
+  on failure, the umount op. The lock is recursive per thread, so the device
+  can be read from the mounting thread, but another thread that locks it
+  waits until the mount is over. ntfsfs reads on its worker thread, which
+  therefore skips the lock while the thread it works for holds it.
+- A writable FSROOT mount receives devctl 0x3802 (exfatfs: create
+  `SceIoTrash`) right after mounting, and is unmounted again unless it returns
+  0 or `0x8001001C`. ntfsfs returns 0.
 - An ntfs mount on `ux0:` or `grw0:` receives the idle devctl 0x3803. It must
   answer ENOENT (`0x80010002`). `0x80010030` would make the daemon repeat the
   call every 100 µs for as long as the device is idle. ntfsfs does this

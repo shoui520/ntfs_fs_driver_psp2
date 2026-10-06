@@ -1168,6 +1168,15 @@ static int vfs_devctl(SceVfsOpDevctlArg *a)
 			return NTFSFS_ERR(EINVAL);
 		memset(a->buf, 0xff, 8);
 		return 0;
+	case 0x3802:
+		/*
+		 * vfsMount (0x81004a0c) sends 0x3802 (exfatfs: create and pin
+		 * SceIoTrash) after mounting writable volumes, and unmounts
+		 * again unless it succeeds or fails with 0x8001001C.  ntfsfs
+		 * keeps files deleted while open itself (SCEDEL~ names), so
+		 * there is nothing to create.
+		 */
+		return 0;
 	case 0x3803:
 		/*
 		 * iofilemgr's idle daemon (0x810155ec) sends 0x3803 (exfatfs:

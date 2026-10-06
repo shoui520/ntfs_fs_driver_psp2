@@ -29,16 +29,34 @@ static uint32_t SECT(const ntfsfs_blk *b)
 	return b->sector ? b->sector : NTFSFS_SECTOR;
 }
 
+/*
+ * iofilemgr holds the device vnode's lock while it mounts: vfsMount
+ * (0x81004a0c) keeps the vnode iof_path_dir_vnode returned locked through the
+ * VFS mount op, set_root, devctl 0x3802 and, on failure, the umount op.  The
+ * thread holding it is then blocked in ntfsfs_call() on this job, so the vnode
+ * cannot be used concurrently, and the worker locking it would deadlock (the
+ * lock is per thread).  The worker takes the lock only when that thread does
+ * not hold it.
+ */
+static int blk_lock(ntfsfs_blk *b)
+{
+	SceUID caller = ntfsfs_caller_thread();
+
+	if (caller >= 0 && b->vp->vdlock.owner_id == caller)
+		return 0;
+	return vfsLockVnode(b->vp) < 0 ? -1 : 1;
+}
+
 static int blk_xfer(ntfsfs_blk *b, uint64_t off, void *buf, uint32_t len, int wr)
 {
 	SceSize done = 0;
-	int r, tries = 0;
+	int r, tries = 0, locked;
 
 	if ((off | len) & (SECT(b) - 1))
 		return NTFSFS_ERR(EINVAL);
-	r = vfsLockVnode(b->vp);
-	if (r < 0)
-		return r;
+	locked = blk_lock(b);
+	if (locked < 0)
+		return NTFSFS_ERR(EIO);
 	for (;;) {
 		done = 0;
 		if (wr && VOP_HAS(b->vp, vop_pwrite)) {
@@ -65,7 +83,8 @@ static int blk_xfer(ntfsfs_blk *b, uint64_t off, void *buf, uint32_t len, int wr
 				break;
 		}
 	}
-	vfsUnlockVnode(b->vp);
+	if (locked)
+		vfsUnlockVnode(b->vp);
 	if (r < 0)
 		return r;
 	return done == len ? 0 : NTFSFS_ERR(EIO);

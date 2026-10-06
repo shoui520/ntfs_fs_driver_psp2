@@ -38,6 +38,7 @@ SceVfsVnode *mock_blockdev(void)
 
 	vp->core.ops = (SceVopTable *)&blk_vops;
 	vp->core.type = SCE_VNODE_TYPE_CHRDEV;
+	vp->vdlock.owner_id = -1;
 	return vp;
 }
 
@@ -121,8 +122,19 @@ int ksceVopSync(SceVfsVnode *vp, SceVfsFile *file, int flags)
 
 /* ---- vnodes / files ------------------------------------------------------- */
 
+/*
+ * Vnode locks as in iofilemgr (vfsLockVnode 0x8100a294): owned by a thread,
+ * recursive for the owner.  The test is single-threaded, so taking a lock
+ * another "thread" owns would block for ever on the Vita: it aborts here.
+ */
 int vfsLockVnode(SceVfsVnode *vp)
 {
+	if (vp->vdlock.recursive_count && vp->vdlock.owner_id != mock_thread) {
+		fprintf(stderr, "deadlock: thread 0x%X locks a vnode thread 0x%X holds\n",
+			mock_thread, vp->vdlock.owner_id);
+		abort();
+	}
+	vp->vdlock.owner_id = mock_thread;
 	vp->vdlock.recursive_count++;
 	mock_locked++;
 	return 0;
@@ -131,7 +143,9 @@ int vfsLockVnode(SceVfsVnode *vp)
 int vfsUnlockVnode(SceVfsVnode *vp)
 {
 	assert(vp->vdlock.recursive_count > 0);
-	vp->vdlock.recursive_count--;
+	assert(vp->vdlock.owner_id == mock_thread);
+	if (--vp->vdlock.recursive_count == 0)
+		vp->vdlock.owner_id = -1; /* free, as iofilemgr marks it */
 	mock_locked--;
 	return 0;
 }
@@ -141,6 +155,7 @@ int vfsGetNewVnode(SceVfsMount *mnt, SceVopTable *vops, int unk, SceVfsVnode **v
 	SceVfsVnode *vp = calloc(1, sizeof(*vp));
 
 	(void)unk;
+	vp->vdlock.owner_id = -1;
 	vp->core.ops = vops;
 	vp->core.mnt = mnt;
 	*vpp = vp;
@@ -195,9 +210,28 @@ int ksceKernelPrintf(const char *fmt, ...)
 	return r;
 }
 
+/* The calling thread and the ntfsfs worker, as worker.c runs jobs. */
+SceUID mock_thread = MOCK_THREAD_CALLER;
+static SceUID mock_caller = -1;
+
 int ntfsfs_call(ntfsfs_job_fn fn, void *arg)
 {
-	return fn(arg);
+	SceUID saved_thread = mock_thread, saved_caller = mock_caller;
+	int r;
+
+	if (mock_thread == MOCK_THREAD_WORKER)
+		return fn(arg);
+	mock_caller = mock_thread;
+	mock_thread = MOCK_THREAD_WORKER;
+	r = fn(arg);
+	mock_thread = saved_thread;
+	mock_caller = saved_caller;
+	return r;
+}
+
+SceUID ntfsfs_caller_thread(void)
+{
+	return mock_caller;
 }
 
 /* RTC tick: microseconds since 0001-01-01 (proleptic Gregorian). */

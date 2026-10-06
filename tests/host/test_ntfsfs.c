@@ -447,11 +447,24 @@ int main(int argc, char **argv)
 	ma.mnt = &mnt;
 	ma.dev_file_path = &devpath;
 	clock_gettime(CLOCK_MONOTONIC, &t0);
+	/*
+	 * As vfsMount (0x81004a0c): the block device vnode stays locked by the
+	 * mounting thread through the mount op and, for a writable mount,
+	 * devctl 0x3802, which must succeed.
+	 */
+	vfsLockVnode(blk);
 	CHECK_R(mock_vfs->vfs_ops->vfs_mount(&ma));
 	if (!mnt.data) {
 		fprintf(stderr, "mount failed\n");
 		return 1;
 	}
+	if (!ro) {
+		memset(&dc, 0, sizeof(dc));
+		dc.mnt = &mnt;
+		dc.cmd = 0x3802;
+		CHECK(mock_vfs->vfs_ops->vfs_devctl(&dc) == 0);
+	}
+	vfsUnlockVnode(blk);
 	CHECK(blk->core.ref_count == 1);
 
 	ga.mnt = &mnt;

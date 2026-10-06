@@ -46,6 +46,12 @@ int ntfsfs_worker_start(void);
 void ntfsfs_worker_stop(void);
 int ntfsfs_call(ntfsfs_job_fn fn, void *arg);
 
+/*
+ * The thread blocked in ntfsfs_call() on the job the worker is running, or -1.
+ * Locks it holds cannot be taken by the worker until the job returns.
+ */
+SceUID ntfsfs_caller_thread(void);
+
 int ntfsfs_heap_init(void);
 void ntfsfs_heap_fini(void);
 
