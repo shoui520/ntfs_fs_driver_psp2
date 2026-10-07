@@ -15,6 +15,11 @@ extern unsigned mock_sector;
 #define MOCK_THREAD_WORKER 0x40010002
 extern SceUID mock_thread;
 
+/* ksceVopSync on the device fails with this when nonzero */
+extern int mock_sync_fail;
+/* assigns passed to ksceIoSync, concatenated */
+extern char mock_synced[64];
+
 SceVfsVnode *mock_blockdev(void);
 
 #endif

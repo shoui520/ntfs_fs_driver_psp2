@@ -31,6 +31,8 @@ static int fails;
 
 static const SceVopTable *V;
 static SceVfsMount mnt;
+/* as iofilemgr's static mount data for grw0: */
+static SceVfsMountData mount_data = { "grw0:", "exfatgrw0", "sdstor0:gcd-lp-ign-gamerw", NULL, 0xA00 };
 static SceVfsVnode *root;
 
 static SceVfsPath P(const char *name)
@@ -442,6 +444,7 @@ int main(int argc, char **argv)
 
 	blk = mock_blockdev();
 	mnt.mnt_vnode = blk;
+	mnt.mnt_data = &mount_data;
 	mnt.mnt_vfs_inf = mock_vfs;
 	mnt.mnt_flags = SCE_VFS_MOUNT_TYPE_FSROOT | (ro ? SCE_VFS_MOUNT_FLAG_RDONLY : 0);
 	ma.mnt = &mnt;
@@ -524,9 +527,29 @@ int main(int argc, char **argv)
 	printf("root:\n");
 	listdir(root, NULL, 1);
 	if (!ro) {
+		SceVfsOpSyncArgs sa = { &mnt, 0 };
+
 		test_rw();
 		CHECK(listdir(root, "from_vita.txt", 0));
 		CHECK(!listdir(root, "$MFT", 0));
+
+		/* suspend: every NTFS mount is synced by its assign name */
+		CHECK_R(ntfsfs_sync_mounts());
+		CHECK(!strcmp(mock_synced, "grw0:"));
+		/* sdstor's own media errors reach iofilemgr unchanged */
+		mock_sync_fail = (int)0x8032001A;
+		CHECK(mock_vfs->vfs_ops->vfs_sync(&sa) == (int)0x8032001A);
+		/*
+		 * a sync that finds the card gone fails, except while
+		 * suspending, where iofilemgr would retry it for ever
+		 */
+		mock_sync_fail = (int)0x80010013;
+		CHECK(mock_vfs->vfs_ops->vfs_sync(&sa) == (int)0x80010013);
+		ntfsfs_suspending = 1;
+		CHECK(mock_vfs->vfs_ops->vfs_sync(&sa) == (int)0x80010030);
+		ntfsfs_suspending = 0;
+		mock_sync_fail = 0;
+		CHECK_R(mock_vfs->vfs_ops->vfs_sync(&sa));
 	}
 
 	ua.mnt = &mnt;

@@ -59,6 +59,21 @@ void ntfsfs_heap_fini(void);
 int ntfsfs_vfs_register(void);
 int ntfsfs_vfs_unregister(void);
 
+/*
+ * Suspend (main.c, vfs.c).  ntfsfs_sync_mounts() writes every NTFS mount back
+ * while its card still has power.  ntfsfs_suspending is set from the first
+ * suspend event until resume.
+ */
+int ntfsfs_sync_mounts(void);
+extern volatile int ntfsfs_suspending;
+
+/*
+ * The device error behind the running job's EIO, when the device returned a
+ * code that is not an errno one (sdstor's 0x8032xxxx); 0 otherwise.  Cleared
+ * when a job starts.
+ */
+extern int ntfsfs_dev_err;
+
 /* Mount helper used by the ksceIoMount hook (main.c) */
 int ntfsfs_try_mount(int id, const char *path, int permission, int a4, int a5, int a6);
 

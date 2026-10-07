@@ -38,6 +38,10 @@ versions are untested).
   hidden too, and the file is deleted when its last handle closes, as exfatfs
   does.
 - Volumes that Windows left hibernated or unclean mount read-only.
+- Before the system suspends, ntfsfs writes its mounts back while the card
+  still has power (sdstor powers the slot off before iofilemgr's own flush;
+  see [iofilemgr-3.65](iofilemgr-3.65/README.md)). Device errors reach
+  iofilemgr with their own codes, as with exfatfs.
 - Permissions work as on exFAT. The NTFS READONLY, HIDDEN and SYSTEM
   attributes act like the FAT ones, and iofilemgr checks them with
   `SceSblACMgr`. Like exfatfs, ntfsfs calls `SceSblACMgr`:

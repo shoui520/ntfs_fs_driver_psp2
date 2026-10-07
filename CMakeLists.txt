@@ -43,6 +43,7 @@ target_link_libraries(ntfsfs
   taihenForKernel_stub
   taihenModuleUtils_stub
   SceIofilemgrForDriver_stub
+  SceKernelSuspendForDriver_stub
   SceSysclibForDriver_stub
   SceSysmemForDriver_stub
   SceThreadmgrForDriver_stub

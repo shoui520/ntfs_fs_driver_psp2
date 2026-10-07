@@ -168,9 +168,21 @@ static ntfsfs_blk *BLK(struct ntfs_device *dev)
 	return dev->d_private;
 }
 
+int ntfsfs_dev_err;
+
+/*
+ * libntfs-3g only knows errno.  A device error that is not an errno code is
+ * kept in ntfsfs_dev_err and reported in place of EIO (vfs.c sce_err), so
+ * iofilemgr sees sdstor's own media errors, as with exfatfs.
+ */
 static int set_errno(int sce)
 {
-	errno = (sce & 0xffff0000) == 0x80010000 ? (sce & 0xffff) : EIO;
+	if ((sce & 0xffff0000) == 0x80010000) {
+		errno = sce & 0xffff;
+	} else {
+		errno = EIO;
+		ntfsfs_dev_err = sce;
+	}
 	return -1;
 }
 

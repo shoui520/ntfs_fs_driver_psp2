@@ -354,6 +354,18 @@ when nothing is left (see [exfatfs](../exfatfs-3.65/README.md#devctl)).
 - A writable FSROOT mount receives devctl 0x3802 (exfatfs: create
   `SceIoTrash`) right after mounting, and is unmounted again unless it returns
   0 or `0x8001001C`. ntfsfs returns 0.
+- Suspend. `power.skprx` dispatches the suspend events 0x100, 0x102, 0x20F
+  down to 0x200, then 0x400, 0x401, 0x402. At 0x200 sdstor powers the game
+  card / SD slot off and marks the device removed (I/O then fails with
+  0x80010013). At 0x401 iofilemgr writes back every mount written since the
+  last suspend (`iof_flush_dirty_mounts` 0x8100afa4): each vnode's
+  `ksceVopSync(vp, fd_list, 1)`, which flushes the buffer cache, then the VFS
+  op sync. While that sync fails with anything but 0x80010030 or a facility
+  0x32/0x3D error, the mount stays marked and the loop never ends, so the
+  power thread spins and the system does not suspend. exfatfs has nothing
+  left to write by then. ntfsfs writes its mounts back with `ksceIoSync` on
+  event 0x100, and answers 0x80010030 to a sync that finds the card gone
+  while suspending.
 - An ntfs mount on `ux0:` or `grw0:` receives the idle devctl 0x3803. It must
   answer ENOENT (`0x80010002`). `0x80010030` would make the daemon repeat the
   call every 100 µs for as long as the device is idle. ntfsfs does this

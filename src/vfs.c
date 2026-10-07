@@ -165,7 +165,89 @@ static MFT_REF VREF(SceVfsVnode *vp)
 static int sce_err(void)
 {
 	int e = errno ? errno : EIO;
+
+	if (e == EIO && ntfsfs_dev_err < 0)
+		return ntfsfs_dev_err;
 	return NTFSFS_ERR(e);
+}
+
+/* ---- mounts, for the suspend flush ----------------------------------------- */
+
+#define MAX_MOUNTS 8
+
+volatile int ntfsfs_suspending;
+
+/*
+ * Assign names ("grw0:") of the mounted NTFS volumes.  They point into
+ * iofilemgr's static mount data, so they stay valid after an unmount.
+ */
+static const char *volatile g_mounts[MAX_MOUNTS];
+
+static void mounts_add(SceVfsMount *mnt)
+{
+	unsigned i;
+
+	if (!mnt->mnt_data || !mnt->mnt_data->assign_name)
+		return;
+	for (i = 0; i < MAX_MOUNTS; i++)
+		if (!g_mounts[i]) {
+			g_mounts[i] = mnt->mnt_data->assign_name;
+			return;
+		}
+}
+
+static void mounts_remove(SceVfsMount *mnt)
+{
+	unsigned i;
+
+	for (i = 0; mnt->mnt_data && i < MAX_MOUNTS; i++)
+		if (g_mounts[i] == mnt->mnt_data->assign_name)
+			g_mounts[i] = NULL;
+}
+
+/*
+ * The suspend sequence (power.skprx 3.65) dispatches 0x100, 0x102, 0x20F down
+ * to 0x200, then 0x400, 0x401, 0x402.  At 0x200 sdstor powers the game card
+ * slot off and marks SD cards removed; at 0x401 iofilemgr writes back every
+ * mount written since the last suspend (iof_flush_dirty_mounts 0x8100afa4),
+ * and repeats for ever while a mount's sync fails with anything but
+ * 0x80010030 or a facility 0x32/0x3D error.  exfatfs has nothing left to
+ * write by then.  ntfsfs keeps metadata in memory and iofilemgr's buffer cache
+ * holds file data, so they are written back here, on the first suspend event,
+ * through iofilemgr (vfsSync), while the card still has power.
+ */
+int ntfsfs_sync_mounts(void)
+{
+	unsigned i;
+	int r = 0;
+
+	for (i = 0; i < MAX_MOUNTS; i++) {
+		const char *assign = g_mounts[i];
+		int s;
+
+		if (!assign)
+			continue;
+		s = ksceIoSync(assign, 0);
+		if (s < 0) {
+			NTFSFS_LOG("sync %s before suspend: 0x%08X\n", assign, s);
+			r = s;
+		}
+	}
+	return r;
+}
+
+/*
+ * A sync while the system suspends that finds the card gone (0x80010013,
+ * sdstor's removed device) can never succeed, and iofilemgr would retry it
+ * for ever (see ntfsfs_sync_mounts).  It is reported as "nothing to sync".
+ */
+static int suspend_sync_result(int r)
+{
+	if (r == (int)0x80010013 && ntfsfs_suspending) {
+		NTFSFS_LOG("sync after the card went off for suspend: data not written\n");
+		return (int)0x80010030;
+	}
+	return r;
 }
 
 static int is_rdonly(ntfsfs_mnt *m)
@@ -1054,6 +1136,7 @@ static int vfs_mount(SceVfsOpMountArgs *a)
 		goto fail;
 	}
 	mnt->data = j.m;
+	mounts_add(mnt);
 	/* exfatfs sets these two after a successful mount */
 	mnt->available_entry_num = 0x40;
 	mnt->default_io_cache_size = j.m->vol->cluster_size > 0x8000 ?
@@ -1074,6 +1157,7 @@ static int vfs_umount(SceVfsOpUmountArgs *a)
 		return NTFSFS_ERR(EINVAL);
 	memset(&j, 0, sizeof(j));
 	j.m = mnt->data;
+	mounts_remove(mnt);
 	r = ntfsfs_call(job_umount, &j);
 	if (r < 0 && !(a->flags & SCE_VFS_UMOUNT_FLAG_FORCE))
 		NTFSFS_LOG("umount: 0x%08X\n", r);
@@ -1123,7 +1207,7 @@ static int vfs_sync(SceVfsOpSyncArgs *a)
 		return NTFSFS_ERR(EINVAL);
 	memset(&j, 0, sizeof(j));
 	j.m = a->mnt->data;
-	return ntfsfs_call(job_sync, &j);
+	return suspend_sync_result(ntfsfs_call(job_sync, &j));
 }
 
 static int vfs_init(SceVfsOpInitArgs *a)
@@ -1680,7 +1764,7 @@ static int vop_sync(SceVopSyncArgs *a)
 	job_for(&j, a->vp);
 	if (!j.m)
 		return NTFSFS_ERR(EINVAL);
-	return ntfsfs_call(job_sync, &j);
+	return suspend_sync_result(ntfsfs_call(job_sync, &j));
 }
 
 static int vop_inactive(SceVopInactiveArgs *a)

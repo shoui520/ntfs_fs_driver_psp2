@@ -31,6 +31,7 @@ static int worker_main(SceSize args, void *argp)
 			break;
 		if (g_quit)
 			break;
+		ntfsfs_dev_err = 0;
 		g_ret = g_fn(g_arg);
 		ksceKernelSignalSema(g_done, 1);
 	}

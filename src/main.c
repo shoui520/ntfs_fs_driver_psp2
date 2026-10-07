@@ -18,6 +18,7 @@
 #include <psp2kern/kernel/modulemgr.h>
 #include <psp2kern/kernel/threadmgr.h>
 #include <psp2kern/kernel/iofilemgr.h>
+#include <psp2kern/kernel/suspend.h>
 #include <taihen.h>
 
 #include "ntfsfs.h"
@@ -158,6 +159,25 @@ static int ksceIoMount_hook(int id, const char *path, int permission, int a4, in
 	return r2 == NTFSFS_ERR_NOT_NTFS ? r : r2;
 }
 
+/*
+ * Suspend: write every NTFS mount back on the first suspend event, before
+ * sdstor powers the card off at 0x200 (see ntfsfs_sync_mounts in vfs.c).
+ * Resume events end the suspend.
+ */
+static int sysevent_handler(int resume, int eventid, void *args, void *opt)
+{
+	(void)args; (void)opt;
+	if (resume) {
+		ntfsfs_suspending = 0;
+		return 0;
+	}
+	if (eventid == 0x100) {
+		ntfsfs_suspending = 1;
+		ntfsfs_sync_mounts();
+	}
+	return 0;
+}
+
 static int locate_iofilemgr(void)
 {
 	tai_module_info_t info;
@@ -207,6 +227,9 @@ int module_start(SceSize args, void *argp)
 		ntfsfs_vfs_unregister();
 		goto fail;
 	}
+	r = ksceKernelRegisterSysEventHandler("SceNtfsfs", sysevent_handler, NULL);
+	if (r < 0)
+		NTFSFS_LOG("sysevent handler: 0x%08X (no write back before suspend)\n", r);
 	/* Devices that were already present and failed their exfat mount. */
 	for (i = 0; i < sizeof(g_targets) / sizeof(g_targets[0]); i++)
 		if (ntfsfs_try_mount(g_targets[i], NULL, 0, 0, 0, 0) >= 0)

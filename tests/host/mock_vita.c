@@ -114,10 +114,24 @@ int ksceVopCleanup(SceVfsVnode *vp, SceVfsFile *file)
 	return (int)0x80010030;
 }
 
+int mock_sync_fail;
+
 int ksceVopSync(SceVfsVnode *vp, SceVfsFile *file, int flags)
 {
 	(void)vp; (void)file; (void)flags;
+	if (mock_sync_fail)
+		return mock_sync_fail;
 	return fsync(mock_img_fd);
+}
+
+/* ksceIoSync(assign): records the assigns synced */
+char mock_synced[64];
+
+int ksceIoSync(const char *device, unsigned int unk)
+{
+	(void)unk;
+	strncat(mock_synced, device, sizeof(mock_synced) - strlen(mock_synced) - 1);
+	return 0;
 }
 
 /* ---- vnodes / files ------------------------------------------------------- */
@@ -223,6 +237,7 @@ int ntfsfs_call(ntfsfs_job_fn fn, void *arg)
 		return fn(arg);
 	mock_caller = mock_thread;
 	mock_thread = MOCK_THREAD_WORKER;
+	ntfsfs_dev_err = 0;
 	r = fn(arg);
 	mock_thread = saved_thread;
 	mock_caller = saved_caller;
