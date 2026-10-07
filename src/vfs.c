@@ -1452,7 +1452,7 @@ static int vop_open(SceVopOpenArgs *a)
 		return NTFSFS_ERR(EINVAL);
 	if (a->vp->core.type & SCE_VNODE_TYPE_DIR)
 		return NTFSFS_ERR(EISDIR);
-	j.flags = a->flags & ~SCE_O_CREAT;
+	j.flags = (a->flags & ~SCE_O_CREAT) | SCE_O_RDONLY;
 	r = ntfsfs_call(job_open, &j);
 	if (r < 0)
 		return r;
